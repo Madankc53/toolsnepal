@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agency Toolkit — tools.thenepal.io</title>
+  <meta name="description" content="Nepal travel agent calculators: permit fees, visa costs, excess baggage, tip planning. Free, instant, accurate.">
+  <link rel="canonical" href="https://tools.thenepal.io/toolkit/">
+  <link rel="stylesheet" href="/css/global.css">
+
+  <style>
+    /* ── PAGE HEADER ─────────────────────────── */
+    .page-hero {
+      padding: 48px 0 36px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 36px;
+    }
+
+    .page-hero__inner {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .page-hero__title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 4vw, 34px);
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+
+    .page-hero__title em { color: var(--amber); font-style: normal; }
+
+    .page-hero__sub {
+      font-size: 14px;
+      color: var(--text-2);
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+
+    /* ── RATE BAR ─────────────────────────────── */
+    .rate-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .rate-panel__item {
+      font-size: 12px;
+      color: var(--text-2);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .rate-panel__item strong { color: var(--text); font-size: 13px; }
+
+    .live-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ── CURRENCY SELECTOR ───────────────────── */
+    .currency-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .currency-row label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    .currency-row select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 32px 8px 12px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a8480' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      transition: border-color var(--transition);
+    }
+
+    .currency-row select:focus { border-color: var(--amber); outline: none; }
+
+    /* ── TABS ─────────────────────────────────── */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 5px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 120px;
+      background: transparent;
+      border: none;
+      color: var(--text-2);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 10px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all var(--transition);
+      text-align: center;
+    }
+
+    .tab-btn:hover { color: var(--text); background: var(--surface-2); }
+    .tab-btn.active { background: var(--amber); color: #fff; font-weight: 700; }
+
+    [data-theme="dark"] .tab-btn.active { color: #0f1218; }
+
+    /* ── PANELS ──────────────────────────────── */
+    .panel { display: none; }
+    .panel.active { display: block; animation: fadeUp 0.25s ease; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+    .panel-header { margin-bottom: 20px; }
+    .panel-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(17px, 3vw, 22px); font-weight: 700; color: var(--text); }
+    .panel-header p { font-size: 13px; color: var(--text-2); margin-top: 6px; line-height: 1.6; }
+
+    /* ── FORM ────────────────────────────────── */
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 14px; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+
+    .field label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    .field select,
+    .field input[type="number"] {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      padding: 11px 14px;
+      width: 100%;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a8480' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    .field select:focus,
+    .field input[type="number"]:focus {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px var(--amber-bg);
+    }
+
+    input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+    .calc-btn {
+      background: var(--amber);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 13px 28px;
+      cursor: pointer;
+      transition: all var(--transition);
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    [data-theme="dark"] .calc-btn { color: #0f1218; }
+
+    .calc-btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* ── RESULT CARD ─────────────────────────── */
+    .result-card { margin-top: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; display: none; box-shadow: var(--shadow-sm); }
+    .result-card.show { display: block; animation: fadeUp 0.25s ease; }
+
+    .result-header { background: var(--surface-2); border-bottom: 1px solid var(--border); padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; }
+    .result-header .rh-left { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); }
+    .result-header .rh-right { font-size: 11px; color: var(--text-3); }
+
+    .result-body { padding: 18px; }
+
+    .result-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); gap: 12px; }
+    .result-row:last-child { border-bottom: none; }
+    .result-label { font-size: 13px; color: var(--text-2); flex: 1; line-height: 1.5; }
+    .result-value { font-size: 14px; font-weight: 600; color: var(--text); text-align: right; }
+    .result-value.amber { color: var(--amber); }
+    .result-value.green { color: var(--green); }
+    .result-value.small { font-size: 11px; color: var(--text-3); font-weight: 400; display: block; margin-top: 2px; }
+
+    .result-total { background: var(--amber-bg); border: 1px solid var(--amber-border); border-radius: var(--radius-sm); padding: 14px 16px; margin-top: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .result-total .t-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber); }
+    .result-total .t-sub { font-size: 11px; color: var(--text-3); margin-top: 3px; }
+    .result-total .t-value { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--amber); text-align: right; }
+    .result-total .t-conv { font-size: 11px; color: var(--text-3); text-align: right; margin-top: 3px; }
+
+    .note-box { background: var(--green-bg); border: 1px solid rgba(42,122,82,0.2); border-radius: var(--radius-sm); padding: 12px 14px; margin-top: 12px; font-size: 12px; color: var(--green); line-height: 1.7; }
+    .warn-box { background: var(--red-bg); border: 1px solid rgba(192,57,43,0.2); border-radius: var(--radius-sm); padding: 12px 14px; margin-top: 12px; font-size: 12px; color: var(--red); line-height: 1.7; }
+    .info-box { background: var(--amber-bg); border: 1px solid var(--amber-border); border-radius: var(--radius-sm); padding: 12px 14px; margin-top: 12px; font-size: 12px; color: var(--amber); line-height: 1.7; }
+
+    /* ── ACTION ROW ──────────────────────────── */
+    .action-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .action-btn { flex: 1; min-width: 120px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-2); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 10px 14px; cursor: pointer; transition: all var(--transition); text-align: center; }
+    .action-btn:hover { border-color: var(--amber); color: var(--amber); }
+
+    /* ── COMPARE TABLE ───────────────────────── */
+    .compare-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+    .compare-table th { background: var(--surface-2); color: var(--text-3); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+    .compare-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr.best td { background: var(--amber-bg); }
+    .compare-table .badge { display: inline-block; background: var(--amber); color: #fff; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+    [data-theme="dark"] .compare-table .badge { color: #0f1218; }
+
+    @media (max-width: 480px) {
+      .tabs { gap: 3px; }
+      .tab-btn { font-size: 11px; padding: 8px 6px; min-width: 80px; }
+    }
+
+    @media print {
+      .site-header, .site-footer, .tabs, .calc-btn, .action-row, .currency-row, .page-hero__sub { display: none !important; }
+      .panel { display: block !important; }
+      .result-card { display: block !important; border: 1px solid #ccc; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+<script src="/components/header.js"></script>
+
+<main class="page-body">
+  <div class="container">
+
+    <!-- Page hero -->
+    <div class="page-hero">
+      <div class="page-hero__inner">
+        <div>
+          <h1 class="page-hero__title">Nepal <em>Agency Toolkit</em></h1>
+          <p class="page-hero__sub">Permit costs · Visa strategy · Excess baggage · Tip budgets — instant results in your currency</p>
+        </div>
+        <div class="rate-panel">
+          <div class="rate-panel__item"><span class="live-dot"></span> <strong id="r-usd">USD…</strong></div>
+          <div class="rate-panel__item"><strong id="r-inr">INR…</strong></div>
+          <div class="rate-panel__item"><strong id="r-gbp">GBP…</strong></div>
+          <div class="rate-panel__item"><strong id="r-eur">EUR…</strong></div>
+          <div class="rate-panel__item" id="rateNote" style="font-size:10px;color:var(--text-3)">Loading…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Currency selector -->
+    <div class="currency-row">
+      <label>Display In:</label>
+      <select id="currencySelect" onchange="updateCurrency()">
+        <option value="USD">🇺🇸 USD</option>
+        <option value="INR">🇮🇳 INR</option>
+        <option value="CNY">🇨🇳 CNY</option>
+        <option value="GBP">🇬🇧 GBP</option>
+        <option value="EUR">🇩🇪 EUR</option>
+        <option value="NPR">🇳🇵 NPR</option>
+      </select>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" role="tab" onclick="switchTab(0)">🏔️ Permits & TIMS</button>
+      <button class="tab-btn" role="tab" onclick="switchTab(1)">✈️ Visa Fee</button>
+      <button class="tab-btn" role="tab" onclick="switchTab(2)">🧳 Luggage & Excess</button>
+      <button class="tab-btn" role="tab" onclick="switchTab(3)">💵 Tip Planner</button>
+    </div>
+
+    <!-- ══ TOOL 1: PERMITS ══ -->
+    <div class="panel active" id="panel-0">
+      <div class="panel-header">
+        <h2>🏔️ Government Permit & TIMS Matrix</h2>
+        <p>Select trekking region, season, and group size for the exact official permit cost. Fees per Nepal Government 2024/25.</p>
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Trekking Region</label>
+          <select id="p1-region" onchange="onRegionChange()">
+            <option value="">— Select Region —</option>
+            <optgroup label="National Park / Conservation Area">
+              <option value="annapurna">Annapurna (ABC / Circuit / Poon Hill)</option>
+              <option value="everest">Everest / Khumbu</option>
+              <option value="langtang">Langtang Valley</option>
+              <option value="gosaikunda">Gosaikunda / Helambu</option>
+              <option value="chitwan">Chitwan National Park</option>
+              <option value="bardiya">Bardiya National Park</option>
+            </optgroup>
+            <optgroup label="Restricted Area Permits (RAP)">
+              <option value="manaslu">Manaslu Circuit</option>
+              <option value="mustang_upper">Upper Mustang ($500/person)</option>
+              <option value="mustang_lower">Lower Mustang (Jomsom–Muktinath)</option>
+              <option value="dolpo_lower">Lower Dolpo</option>
+              <option value="dolpo_upper">Upper Dolpo</option>
+              <option value="kanchenjunga">Kanchenjunga</option>
+              <option value="humla">Humla / Simikot</option>
+              <option value="nar_phu">Nar Phu Valley</option>
+              <option value="tsum">Tsum Valley</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="field">
+          <label>Season</label>
+          <select id="p1-season">
+            <option value="peak">Peak (Sep–Nov, Mar–May)</option>
+            <option value="off">Off-Peak (Dec–Aug)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Number of Trekkers</label>
+          <input type="number" id="p1-trekkers" min="1" max="200" value="2">
+        </div>
+        <div class="field" id="p1-days-wrap" style="display:none">
+          <label>Total Trek Days</label>
+          <input type="number" id="p1-days" min="1" max="90" value="14">
+        </div>
+      </div>
+      <button class="calc-btn" onclick="calcPermits()">Calculate Permit Costs →</button>
+      <div class="result-card" id="p1-result">
+        <div class="result-header"><span class="rh-left">Permit Cost Breakdown</span><span class="rh-right" id="p1-subtitle"></span></div>
+        <div class="result-body" id="p1-body"></div>
+      </div>
+    </div>
+
+    <!-- ══ TOOL 2: VISA ══ -->
+    <div class="panel" id="panel-1">
+      <div class="panel-header">
+        <h2>✈️ Visa Fee & Extension Calculator</h2>
+        <p>Enter total days in Nepal — we find the cheapest visa strategy with overstay warnings and immigration tips.</p>
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Total Days in Nepal</label>
+          <input type="number" id="v-days" min="1" max="180" value="35">
+        </div>
+        <div class="field">
+          <label>Nationality</label>
+          <select id="v-nat">
+            <option value="standard">Standard (Most Countries)</option>
+            <option value="india">🇮🇳 Indian National</option>
+            <option value="china">🇨🇳 Chinese National</option>
+            <option value="saarc">SAARC (BD, BT, MV, PK, LK)</option>
+            <option value="uk">🇬🇧 British / EU / German / French</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Entry Type</label>
+          <select id="v-entry">
+            <option value="single">Single Entry</option>
+            <option value="multiple">Multiple Entry (re-entering Nepal)</option>
+          </select>
+        </div>
+      </div>
+      <button class="calc-btn" onclick="calcVisa()">Calculate Best Visa Strategy →</button>
+      <div class="result-card" id="v-result">
+        <div class="result-header"><span class="rh-left">Visa Strategy</span><span class="rh-right" id="v-subtitle"></span></div>
+        <div class="result-body" id="v-body"></div>
+      </div>
+    </div>
+
+    <!-- ══ TOOL 3: LUGGAGE ══ -->
+    <div class="panel" id="panel-2">
+      <div class="panel-header">
+        <h2>🧳 Domestic Flight Luggage & Excess Estimator</h2>
+        <p>STOL flights allow 15 kg total (adults) / 7 kg (children). Calculate excess fees before check-in.</p>
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Number of Passengers</label>
+          <input type="number" id="l-pax" min="1" max="100" value="4">
+        </div>
+        <div class="field">
+          <label>Gear per Person (kg)</label>
+          <input type="number" id="l-weight" min="1" max="60" value="18" step="0.5">
+        </div>
+        <div class="field">
+          <label>Route / Airline</label>
+          <select id="l-route">
+            <option value="stol_tara">KTM → Lukla (Tara Air) $1/kg</option>
+            <option value="stol_summit">KTM → Lukla (Summit Air) $1/kg</option>
+            <option value="jomsom">KTM → Jomsom (Tara Air) $1/kg</option>
+            <option value="humla">KTM → Simikot / Humla NPR 300/kg</option>
+            <option value="pokhara">KTM → Pokhara NPR 200/kg</option>
+            <option value="other">Other STOL NPR 250/kg</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Children (under 12)</label>
+          <input type="number" id="l-child" min="0" max="20" value="0">
+        </div>
+      </div>
+      <button class="calc-btn" onclick="calcLuggage()">Calculate Excess Baggage →</button>
+      <div class="result-card" id="l-result">
+        <div class="result-header"><span class="rh-left">Baggage Breakdown</span><span class="rh-right" id="l-subtitle"></span></div>
+        <div class="result-body" id="l-body"></div>
+      </div>
+    </div>
+
+    <!-- ══ TOOL 4: TIPS ══ -->
+    <div class="panel" id="panel-3">
+      <div class="panel-header">
+        <h2>💵 Guide & Porter Tip Planner</h2>
+        <p>TAAN-standard tip ranges with per-tourist breakdown. Shows group total and individual contribution.</p>
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Trek Days</label>
+          <input type="number" id="t-days" min="1" max="60" value="14">
+        </div>
+        <div class="field">
+          <label>Guides</label>
+          <input type="number" id="t-guides" min="0" max="20" value="1">
+        </div>
+        <div class="field">
+          <label>Porters</label>
+          <input type="number" id="t-porters" min="0" max="30" value="2">
+        </div>
+        <div class="field">
+          <label>Asst. Guides / Cooks</label>
+          <input type="number" id="t-asst" min="0" max="20" value="0">
+        </div>
+        <div class="field">
+          <label>Tourists in Group</label>
+          <input type="number" id="t-tourists" min="1" max="50" value="4">
+        </div>
+      </div>
+      <button class="calc-btn" onclick="calcTips()">Calculate Tip Budget →</button>
+      <div class="result-card" id="t-result">
+        <div class="result-header"><span class="rh-left">Tip Budget Breakdown</span><span class="rh-right" id="t-subtitle"></span></div>
+        <div class="result-body" id="t-body"></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script src="/components/footer.js"></script>
+<script>
+// ══ RATES ══════════════════════════════════════════════
+const RATES = { USD:136, INR:1.63, CNY:18.7, GBP:172, EUR:148, NPR:1 };
+const SYM   = { USD:'$', INR:'₹', CNY:'¥', GBP:'£', EUR:'€', NPR:'NPR ' };
+let activeCurrency = 'USD';
+
+async function fetchRates() {
+  try {
+    const res = await fetch('https://api.exchangerate-api.com/v4/latest/NPR');
+    const d = await res.json();
+    if (d.rates) {
+      ['USD','INR','CNY','GBP','EUR'].forEach(c => {
+        if (d.rates[c]) RATES[c] = +(1/d.rates[c]).toFixed(c==='INR'?4:2);
+      });
+      document.getElementById('r-usd').textContent = `1 USD = ${RATES.USD} NPR`;
+      document.getElementById('r-inr').textContent = `1 INR = ${RATES.INR} NPR`;
+      document.getElementById('r-gbp').textContent = `1 GBP = ${RATES.GBP} NPR`;
+      document.getElementById('r-eur').textContent = `1 EUR = ${RATES.EUR} NPR`;
+      document.getElementById('rateNote').textContent = '● Live';
+      document.getElementById('rateNote').style.color = 'var(--green)';
+    }
+  } catch(e) {
+    document.getElementById('rateNote').textContent = '≈ Approx.';
+  }
+}
+fetchRates();
+setInterval(fetchRates, 60*60*1000);
+
+function updateCurrency() { activeCurrency = document.getElementById('currencySelect').value; }
+
+function fmtNPR(n) { return `NPR ${Math.round(n).toLocaleString()}`; }
+function fmtCur(nprAmt) {
+  if (activeCurrency === 'NPR') return fmtNPR(nprAmt);
+  const v = nprAmt / RATES[activeCurrency];
+  return SYM[activeCurrency] + (activeCurrency==='INR' ? Math.round(v).toLocaleString() : v.toFixed(2));
+}
+function fmtBoth(nprAmt) {
+  if (activeCurrency === 'NPR') return fmtNPR(nprAmt);
+  return `${fmtCur(nprAmt)} <span class="result-value small">${fmtNPR(nprAmt)}</span>`;
+}
+function fmtUSD(usdAmt) { return fmtBoth(usdAmt * RATES.USD); }
+
+// ══ UI ═════════════════════════════════════════════════
+function switchTab(idx) {
+  document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+}
+function onRegionChange() {
+  const rap=['manaslu','kanchenjunga','humla','nar_phu','tsum','dolpo_lower','dolpo_upper'];
+  document.getElementById('p1-days-wrap').style.display=rap.includes(document.getElementById('p1-region').value)?'flex':'none';
+}
+function showResult(id,html) {
+  document.getElementById(id.replace('result','body')).innerHTML=html;
+  const c=document.getElementById(id); c.classList.add('show');
+  c.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function copyResult(id) {
+  const t=document.getElementById(id.replace('result','body')).innerText;
+  navigator.clipboard.writeText(t).then(()=>alert('Copied to clipboard!'));
+}
+function buildActions(id) {
+  return `<div class="action-row"><button class="action-btn" onclick="copyResult('${id}')">📋 Copy</button><button class="action-btn" onclick="window.print()">🖨️ Print / PDF</button></div>`;
+}
+
+// ══ TOOL 1 ════════════════════════════════════════════
+function calcPermits(){
+  const region=document.getElementById('p1-region').value;
+  const season=document.getElementById('p1-season').value;
+  const n=Math.max(1,parseInt(document.getElementById('p1-trekkers').value)||1);
+  const days=Math.max(1,parseInt(document.getElementById('p1-days').value)||14);
+  if(!region){alert('Select a region.');return;}
+  const VAT=0.13,isPeak=season==='peak';
+  let rows=[],totalNPR=0,notes=[],warns=[];
+  const acapNPR=(3000*(1+VAT))*n,mcapNPR=(3000*(1+VAT))*n,snpNPR=(3000*(1+VAT))*n,lnpNPR=(3000*(1+VAT))*n,timsNPR=1000*n;
+  const addR=(l,a)=>{rows.push({l,a});totalNPR+=a;};
+  const addU=(l,u)=>{rows.push({l,u});totalNPR+=u*RATES.USD;};
+
+  const regionMap={
+    annapurna:()=>{addR(`ACAP (NPR 3,000+13% VAT)×${n}`,acapNPR);addR(`TIMS Card×${n}`,timsNPR);notes.push('ACAP covers ABC, Poon Hill, Circuit, Mardi Himal. TIMS via registered agency only.');document.getElementById('p1-subtitle').textContent='Annapurna';},
+    everest:()=>{addR(`Sagarmatha NP (NPR 3,000+13% VAT)×${n}`,snpNPR);addR(`Khumbu Local Permit (NPR 2,000)×${n}`,2000*n);notes.push('TIMS NOT required in Khumbu. Khumbu permit issued at Monjo checkpoint.');warns.push('Khumbu local permit fee increase announced — verify before quoting.');document.getElementById('p1-subtitle').textContent='Everest / Khumbu';},
+    langtang:()=>{addR(`Langtang NP (NPR 3,000+13% VAT)×${n}`,lnpNPR);addR(`TIMS Card×${n}`,timsNPR);document.getElementById('p1-subtitle').textContent='Langtang';},
+    gosaikunda:()=>{addR(`TIMS Card×${n}`,timsNPR);notes.push('Gosaikunda Lake inside Langtang NP boundary — add LNP permit if crossing into the park.');document.getElementById('p1-subtitle').textContent='Gosaikunda / Helambu';},
+    chitwan:()=>{addR(`Chitwan NP Entry (NPR 1,500)×${n}`,1500*n);addR(`Activities est. (NPR 2,500/person)×${n}`,2500*n);notes.push('Activity fees vary by operator. Entry fee separate from lodge packages.');document.getElementById('p1-subtitle').textContent='Chitwan NP';},
+    bardiya:()=>{addR(`Bardiya NP Entry (NPR 1,500)×${n}`,1500*n);notes.push('Tiger safari permits require advance booking at park office.');document.getElementById('p1-subtitle').textContent='Bardiya NP';},
+    manaslu:()=>{const b=isPeak?100:75,e=isPeak?15:10,xd=Math.max(0,days-7);addU(`Manaslu RAP ($${b}+$${e}/day×${xd})×${n}`,(b+xd*e)*n);addR(`MCAP (NPR 3,000+13% VAT)×${n}`,mcapNPR);addR(`TIMS×${n}`,timsNPR);notes.push('Min 2 trekkers + licensed guide. Solo NOT permitted.');warns.push(`Season: ${isPeak?'Peak (Sep–Nov/Mar–May)':'Off-Peak (Dec–Aug)'}. Verify at Nepal Immigration.`);document.getElementById('p1-subtitle').textContent='Manaslu';},
+    mustang_upper:()=>{addU(`Upper Mustang RAP ($500/person)×${n}`,500*n);addR(`ACAP (NPR 3,000+13% VAT)×${n}`,acapNPR);addR(`TIMS×${n}`,timsNPR);notes.push('Valid 10 days. Extension $50/day. Guide mandatory. No solo trekking.');warns.push('Upper Mustang RAP does NOT cover Lower Mustang / Jomsom.');document.getElementById('p1-subtitle').textContent='Upper Mustang';},
+    mustang_lower:()=>{addR(`ACAP (NPR 3,000+13% VAT)×${n}`,acapNPR);addR(`TIMS×${n}`,timsNPR);notes.push('Lower Mustang (Jomsom–Muktinath) does NOT require the $500 RAP.');document.getElementById('p1-subtitle').textContent='Lower Mustang';},
+    dolpo_lower:()=>{const r=isPeak?350:250;addU(`Lower Dolpo RAP ($${r}/person)×${n}`,r*n);addR(`TIMS×${n}`,timsNPR);notes.push('Covers Phoksundo NP. Licensed guide mandatory.');document.getElementById('p1-subtitle').textContent='Lower Dolpo';},
+    dolpo_upper:()=>{const r=isPeak?500:350;addU(`Upper Dolpo RAP ($${r}/person)×${n}`,r*n);addR(`TIMS×${n}`,timsNPR);warns.push('Upper Dolpo is extremely remote. Verify current rates with Nepal Immigration before quoting.');document.getElementById('p1-subtitle').textContent='Upper Dolpo';},
+    kanchenjunga:()=>{const r=isPeak?100:75;addU(`Kanchenjunga RAP ($${r}/person)×${n}`,r*n);addR(`TIMS×${n}`,timsNPR);notes.push('Min 2 trekkers. Licensed guide mandatory.');document.getElementById('p1-subtitle').textContent='Kanchenjunga';},
+    humla:()=>{const xd=Math.max(0,days-7);addU(`Humla RAP ($90+$15/extra day×${xd})×${n}`,(90+xd*15)*n);notes.push('Separate Chinese visa + Tibet permits needed for Kailash cross-border route.');document.getElementById('p1-subtitle').textContent='Humla / Simikot';},
+    nar_phu:()=>{const r=isPeak?90:75;addU(`Nar Phu RAP ($${r}/person)×${n}`,r*n);addR(`ACAP (NPR 3,000+13% VAT)×${n}`,acapNPR);addR(`TIMS×${n}`,timsNPR);notes.push('Accessed from Koto on Annapurna Circuit. Guide mandatory.');document.getElementById('p1-subtitle').textContent='Nar Phu Valley';},
+    tsum:()=>{const xd=Math.max(0,days-7);addU(`Tsum RAP ($50+$7/day×${xd})×${n}`,(50+xd*7)*n);addR(`MCAP (NPR 3,000+13% VAT)×${n}`,mcapNPR);addR(`TIMS×${n}`,timsNPR);notes.push('Often combined with Manaslu Circuit. Sold as package by most agencies.');document.getElementById('p1-subtitle').textContent='Tsum Valley';}
+  };
+
+  regionMap[region]?.();
+  let html=rows.map(r=>`<div class="result-row"><span class="result-label">${r.l}</span><span class="result-value">${r.u?fmtUSD(r.u):fmtBoth(r.a)}</span></div>`).join('');
+  html+=`<div class="result-total"><div><div class="t-label">Total Permit Cost</div><div class="t-sub">${n} trekker${n>1?'s':''}</div></div><div style="text-align:right"><div class="t-value">${fmtCur(totalNPR)}</div><div class="t-conv">${fmtNPR(totalNPR)}</div></div></div>`;
+  notes.forEach(x=>{html+=`<div class="note-box">ℹ️ ${x}</div>`;});
+  warns.forEach(x=>{html+=`<div class="warn-box">⚠️ ${x}</div>`;});
+  html+=buildActions('p1-result');
+  showResult('p1-result',html);
+}
+
+// ══ TOOL 2 ════════════════════════════════════════════
+function calcVisa(){
+  const days=parseInt(document.getElementById('v-days').value)||0;
+  const nat=document.getElementById('v-nat').value;
+  const entry=document.getElementById('v-entry').value;
+  if(days<1){alert('Enter total days.');return;}
+  document.getElementById('v-subtitle').textContent=`${days} days`;
+  let html='';
+
+  if(nat==='india'){
+    html=`<div class="result-row"><span class="result-label">Indian Nationals</span><span class="result-value green">NO VISA — FREE</span></div><div class="result-row"><span class="result-label">Accepted documents</span><span class="result-value">Passport or Voter ID</span></div><div class="result-row"><span class="result-label">Maximum stay</span><span class="result-value">Unlimited</span></div><div class="note-box">ℹ️ Indian nationals enter Nepal visa-free. Valid passport OR official voter ID accepted at all entry points.</div>`;
+    html+=buildActions('v-result'); showResult('v-result',html); return;
+  }
+  if(nat==='saarc'){
+    html=`<div class="result-row"><span class="result-label">SAARC National (BD/BT/MV/PK/LK)</span><span class="result-value green">FREE — First Entry</span></div><div class="result-row"><span class="result-label">Subsequent entries (same year)</span><span class="result-value">Standard rates apply</span></div><div class="note-box">ℹ️ One free visa entry per calendar year. Subsequent re-entries charged at standard On Arrival rates ($30/$50/$125).</div>`;
+    html+=buildActions('v-result'); showResult('v-result',html); return;
+  }
+
+  const opts=[];
+  const addOpt=(label,vFee,extDays)=>opts.push({label,vFee,extDays,extFee:extDays*3,total:vFee+extDays*3});
+  if(days<=15) addOpt('15-Day On Arrival Visa',30,0);
+  else if(days<=30){addOpt('30-Day On Arrival Visa',50,0);addOpt(`15-Day Visa + ${days-15}-Day Extension`,30,days-15);}
+  else if(days<=90){addOpt('90-Day On Arrival Visa',125,0);addOpt(`30-Day Visa + ${days-30}-Day Extension`,50,days-30);}
+  else if(days<=150){addOpt(`90-Day Visa + ${days-90}-Day Extension`,125,days-90);}
+  else{addOpt('90-Day Visa + 60-Day Extension (max)',125,60);}
+  opts.sort((a,b)=>a.total-b.total);
+  const best=opts[0];
+
+  html+=`<table class="compare-table"><thead><tr><th>Option</th><th>Visa Fee</th><th>Extension</th><th>Total</th></tr></thead><tbody>`;
+  opts.forEach((o,i)=>{
+    html+=`<tr class="${i===0?'best':''}"><td>${o.label}${i===0?'<span class="badge">Best</span>':''}</td><td>${fmtUSD(o.vFee)}</td><td>${o.extDays>0?fmtUSD(o.extFee)+` (${o.extDays}d×$3)`:'—'}</td><td><strong>${fmtUSD(o.total)}</strong></td></tr>`;
+  });
+  html+=`</tbody></table>`;
+  html+=`<div class="result-total"><div><div class="t-label">Best Strategy</div><div class="t-sub">${best.label}</div></div><div style="text-align:right"><div class="t-value">${fmtCur(best.total*RATES.USD)}</div><div class="t-conv">${fmtNPR(best.total*RATES.USD)}</div></div></div>`;
+  if(days>150) html+=`<div class="warn-box">🚫 Nepal visa max is 150 days/year. Client must exit and re-enter. Overstay fine: NPR 5,000/day.</div>`;
+  else if(days>90) html+=`<div class="warn-box">⚠️ Extension at Dept. of Immigration, Kalikasthan KTM or Pokhara Immigration. Bring: passport + 1 photo + form. Allow 1–2 working days.</div>`;
+  if(entry==='multiple') html+=`<div class="info-box">↩️ Multiple Entry: each re-entry needs a new On Arrival visa. Above cost is per entry.</div>`;
+  html+=`<div class="note-box">📍 Visa on Arrival at: TIA Kathmandu · Pokhara Airport · Birgunj · Bhairahawa · Kakarbhitta · Kodari. Bring USD cash + 1 photo.</div>`;
+  html+=buildActions('v-result');
+  showResult('v-result',html);
+}
+
+// ══ TOOL 3 ════════════════════════════════════════════
+function calcLuggage(){
+  const pax=Math.max(1,parseInt(document.getElementById('l-pax').value)||1);
+  const wpp=parseFloat(document.getElementById('l-weight').value)||0;
+  const route=document.getElementById('l-route').value;
+  const child=parseInt(document.getElementById('l-child').value)||0;
+  const adults=pax-child,allowed=adults*15+child*7,total=pax*wpp,excess=Math.max(0,total-allowed);
+  let rateNPR=0,rateLabel='';
+  if(['stol_tara','stol_summit','jomsom'].includes(route)){rateNPR=RATES.USD;rateLabel='$1/kg (Tara/Summit Air official)';}
+  else if(route==='humla'){rateNPR=300;rateLabel='NPR 300/kg (remote STOL)';}
+  else if(route==='pokhara'){rateNPR=200;rateLabel='NPR 200/kg (Buddha Air est.)';}
+  else{rateNPR=250;rateLabel='NPR 250/kg (STOL average)';}
+  const excessNPR=excess*rateNPR;
+  document.getElementById('l-subtitle').textContent=`${pax} pax · ${wpp}kg/person`;
+  let html=`<div class="result-row"><span class="result-label">Adults (${adults}×15kg) + Children (${child}×7kg)</span><span class="result-value">${allowed} kg allowed</span></div><div class="result-row"><span class="result-label">Total gear (${wpp}kg × ${pax} pax)</span><span class="result-value">${total} kg</span></div><div class="result-row"><span class="result-label">Excess weight</span><span class="result-value ${excess>0?'amber':''}">${excess.toFixed(1)} kg</span></div><div class="result-row"><span class="result-label">Rate</span><span class="result-value small">${rateLabel}</span></div>`;
+  if(excess>0){
+    html+=`<div class="result-total"><div><div class="t-label">Estimated Excess Fee</div><div class="t-sub">${excess.toFixed(1)} kg × rate</div></div><div style="text-align:right"><div class="t-value">${fmtCur(excessNPR)}</div><div class="t-conv">${fmtNPR(excessNPR)}</div></div></div>`;
+    html+=`<div class="warn-box">⚠️ ${excess.toFixed(1)} kg excess. Options: (1) Reduce packing, (2) Pay at counter in NPR/USD, (3) Use Lukla porter cargo service.</div>`;
+  } else {
+    html+=`<div class="note-box">✅ No excess! ${(allowed-total).toFixed(1)} kg under limit. No extra fees expected.</div>`;
+  }
+  html+=`<div class="info-box">💡 Tara Air strictly enforces 15 kg at KTM domestic terminal. Check-in opens 60 min before departure. Excess paid in NPR cash or USD at counter.</div>`;
+  html+=buildActions('l-result');
+  showResult('l-result',html);
+}
+
+// ══ TOOL 4 ════════════════════════════════════════════
+function calcTips(){
+  const days=parseInt(document.getElementById('t-days').value)||0;
+  const guides=parseInt(document.getElementById('t-guides').value)||0;
+  const porters=parseInt(document.getElementById('t-porters').value)||0;
+  const asst=parseInt(document.getElementById('t-asst').value)||0;
+  const tourists=Math.max(1,parseInt(document.getElementById('t-tourists').value)||1);
+  if(days<1){alert('Enter trek days.');return;}
+  const gL=guides*days*15,gH=guides*days*20,pL=porters*days*10,pH=porters*days*15,aL=asst*days*10,aH=asst*days*15;
+  const tL=gL+pL+aL,tH=gH+pH+aH,ppL=tL/tourists,ppH=tH/tourists;
+  document.getElementById('t-subtitle').textContent=`${days}d · ${guides}G/${porters}P/${asst}A`;
+  let html=`<div class="result-row"><span class="result-label">Trek duration / Group size</span><span class="result-value">${days} days · ${tourists} tourists</span></div>`;
+  if(guides>0) html+=`<div class="result-row"><span class="result-label">Guide${guides>1?'s':''} (${guides}×$15–$20/day×${days}d)</span><span class="result-value">${fmtUSD(gL)} – ${fmtUSD(gH)}</span></div>`;
+  if(porters>0) html+=`<div class="result-row"><span class="result-label">Porter${porters>1?'s':''} (${porters}×$10–$15/day×${days}d)</span><span class="result-value">${fmtUSD(pL)} – ${fmtUSD(pH)}</span></div>`;
+  if(asst>0) html+=`<div class="result-row"><span class="result-label">Asst.Guide${asst>1?'s':''}/Cook${asst>1?'s':''} (${asst}×$10–$15/day×${days}d)</span><span class="result-value">${fmtUSD(aL)} – ${fmtUSD(aH)}</span></div>`;
+  html+=`<div class="result-total"><div><div class="t-label">Total Group Tip</div><div class="t-sub">Given at end of trek</div></div><div style="text-align:right"><div class="t-value">${fmtCur(tL*RATES.USD)} – ${fmtCur(tH*RATES.USD)}</div><div class="t-conv">${fmtNPR(tL*RATES.USD)} – ${fmtNPR(tH*RATES.USD)}</div></div></div>`;
+  html+=`<div class="result-total" style="margin-top:8px"><div><div class="t-label">Per Tourist</div><div class="t-sub">Each of ${tourists} people should bring:</div></div><div style="text-align:right"><div class="t-value">${fmtCur(ppL*RATES.USD)} – ${fmtCur(ppH*RATES.USD)}</div><div class="t-conv">${fmtNPR(ppL*RATES.USD)} – ${fmtNPR(ppH*RATES.USD)}</div></div></div>`;
+  html+=`<div class="note-box">💡 TAAN Rates: Guide $15–20/day · Porter $10–15/day · Asst/Cook $10–15/day.<br>Give tips on last trek day. Bring NPR cash in small denominations (500–1,000 notes).</div>`;
+  html+=buildActions('t-result');
+  showResult('t-result',html);
+}
+</script>
+</body>
+</html>
