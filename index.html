@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nepal Travel Agent Toolkit — tools.thenepal.io</title>
+  <meta name="description" content="Free professional calculators for Nepal travel agents. Permit fees, visa costs, luggage estimates, tip planning — all in one place.">
+  <meta name="theme-color" content="#c8830a">
+  <link rel="canonical" href="https://tools.thenepal.io/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Nepal Agency Toolkit — tools.thenepal.io">
+  <meta property="og:description" content="Free calculators for Nepal travel agents: permits, visas, luggage, tips.">
+  <meta property="og:url" content="https://tools.thenepal.io/">
+  <meta property="og:type" content="website">
+
+  <link rel="stylesheet" href="/css/global.css">
+
+  <style>
+    /* ── HERO ─────────────────────────────────── */
+    .hero {
+      padding: 80px 0 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, var(--amber-bg), transparent);
+      pointer-events: none;
+    }
+
+    .hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--amber);
+      background: var(--amber-bg);
+      border: 1px solid var(--amber-border);
+      border-radius: 20px;
+      padding: 6px 14px;
+      margin-bottom: 24px;
+    }
+
+    .hero__title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 6vw, 58px);
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero__title em {
+      color: var(--amber);
+      font-style: normal;
+    }
+
+    .hero__sub {
+      font-size: clamp(15px, 2.5vw, 18px);
+      color: var(--text-2);
+      line-height: 1.7;
+      max-width: 520px;
+      margin: 0 auto 36px;
+    }
+
+    .hero__actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero__stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 56px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat__num {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .stat__label {
+      font-size: 12px;
+      color: var(--text-3);
+      margin-top: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── TOOLS SECTION ───────────────────────── */
+    .tools-section {
+      padding: 64px 0;
+    }
+
+    .tools-section__head {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .tool-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: all var(--transition);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tool-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--amber);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .tool-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-2);
+      transform: translateY(-3px);
+      opacity: 1;
+    }
+
+    .tool-card:hover::after {
+      transform: scaleX(1);
+    }
+
+    .tool-card__icon {
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .tool-card__title {
+      font-family: 'Playfair Display', serif;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .tool-card__desc {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .tool-card__tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--amber);
+      letter-spacing: 0.04em;
+    }
+
+    .tool-card__tag::after {
+      content: '→';
+      transition: transform var(--transition);
+    }
+
+    .tool-card:hover .tool-card__tag::after {
+      transform: translateX(4px);
+    }
+
+    /* ── HOW IT WORKS ────────────────────────── */
+    .how-section {
+      padding: 64px 0;
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .how-section__head {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 32px;
+      counter-reset: steps;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step__num {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--amber-bg);
+      border: 1px solid var(--amber-border);
+      color: var(--amber);
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .step__title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .step__desc {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
+
+    /* ── CURRENCY BAR ────────────────────────── */
+    .currency-bar {
+      padding: 20px 0;
+      background: var(--bg-3);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .currency-bar__inner {
+      display: flex;
+      gap: 0;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .currency-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 24px;
+      border-right: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-2);
+    }
+
+    .currency-chip:last-child { border-right: none; }
+
+    .currency-chip strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .currency-chip .live-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ── CTA ─────────────────────────────────── */
+    .cta-section {
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .cta-section__box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 56px 40px;
+      max-width: 640px;
+      margin: 0 auto;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section__box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--amber), var(--amber-light));
+    }
+
+    .cta-section__title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+
+    .cta-section__sub {
+      font-size: 15px;
+      color: var(--text-2);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────── */
+    @media (max-width: 600px) {
+      .hero { padding: 48px 0 52px; }
+      .hero__stats { gap: 24px; }
+      .cta-section__box { padding: 36px 24px; }
+      .currency-chip { padding: 8px 14px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+<script src="/components/header.js"></script>
+
+<main class="page-body">
+
+  <!-- ── LIVE RATE BAR ────────────────────── -->
+  <div class="currency-bar">
+    <div class="currency-bar__inner" id="rateBar">
+      <div class="currency-chip"><span>🇺🇸</span> <strong id="r-usd">USD</strong> <span class="live-dot"></span></div>
+      <div class="currency-chip"><span>🇮🇳</span> <strong id="r-inr">INR</strong></div>
+      <div class="currency-chip"><span>🇨🇳</span> <strong id="r-cny">CNY</strong></div>
+      <div class="currency-chip"><span>🇬🇧</span> <strong id="r-gbp">GBP</strong></div>
+      <div class="currency-chip"><span>🇩🇪</span> <strong id="r-eur">EUR</strong></div>
+      <div class="currency-chip" style="font-size:11px;color:var(--text-3)" id="rateNote">Fetching live rates…</div>
+    </div>
+  </div>
+
+  <!-- ── HERO ─────────────────────────────── -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero__eyebrow">🇳🇵 Free · For Nepal Travel Agents</div>
+      <h1 class="hero__title">
+        The <em>Professional Toolkit</em><br>for Nepal Travel Agents
+      </h1>
+      <p class="hero__sub">
+        Stop calculating permit fees, visa costs, and tip budgets manually. Get instant, accurate breakdowns in seconds — built for Thamel and Pokhara agencies.
+      </p>
+      <div class="hero__actions">
+        <a href="/toolkit/" class="btn btn--primary btn--lg">Open the Toolkit →</a>
+        <a href="https://thenepal.io" class="btn btn--outline btn--lg" target="_blank" rel="noopener">Visit thenepal.io</a>
+      </div>
+
+      <div class="hero__stats">
+        <div class="stat">
+          <div class="stat__num">4</div>
+          <div class="stat__label">Professional Tools</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num">9+</div>
+          <div class="stat__label">Trekking Regions</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num">5</div>
+          <div class="stat__label">Live Currencies</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num">Free</div>
+          <div class="stat__label">Always</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TOOLS GRID ───────────────────────── -->
+  <section class="tools-section">
+    <div class="container">
+      <div class="tools-section__head">
+        <div class="section-label">What's Inside</div>
+        <h2 class="section-title" style="margin-bottom:12px">Four tools. One tab. Open all day.</h2>
+        <p class="section-sub" style="margin:0 auto">Everything a Nepal trekking agent needs to build accurate quotes — without opening a spreadsheet.</p>
+      </div>
+
+      <div class="tools-grid">
+        <a href="/toolkit/" class="tool-card">
+          <div class="tool-card__icon">🏔️</div>
+          <div class="tool-card__title">Permit & TIMS Matrix</div>
+          <p class="tool-card__desc">Select region, season, and group size. Get the exact permit cost breakdown — ACAP, TIMS, National Park, Restricted Area Permits — in NPR and your currency.</p>
+          <span class="tool-card__tag">9 regions covered</span>
+        </a>
+
+        <a href="/toolkit/" class="tool-card">
+          <div class="tool-card__icon">✈️</div>
+          <div class="tool-card__title">Visa Fee Calculator</div>
+          <p class="tool-card__desc">Enter total days in Nepal. Automatically finds the cheapest visa strategy — single visa vs. 30-day + extension — with overstay warnings and immigration tips.</p>
+          <span class="tool-card__tag">All nationalities</span>
+        </a>
+
+        <a href="/toolkit/" class="tool-card">
+          <div class="tool-card__icon">🧳</div>
+          <div class="tool-card__title">Luggage & Excess Estimator</div>
+          <p class="tool-card__desc">STOL flights to Lukla, Jomsom, and Humla have strict 15 kg limits. Calculate exact excess fees by airline before your clients hit the check-in counter.</p>
+          <span class="tool-card__tag">Tara Air · Summit Air</span>
+        </a>
+
+        <a href="/toolkit/" class="tool-card">
+          <div class="tool-card__icon">💵</div>
+          <div class="tool-card__title">Guide & Porter Tip Planner</div>
+          <p class="tool-card__desc">TAAN-standard tip ranges for guides, porters, and assistant guides. Shows group total and per-tourist breakdown in NPR and your selected currency.</p>
+          <span class="tool-card__tag">TAAN standard rates</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ──────────────────────── -->
+  <section class="how-section">
+    <div class="container">
+      <div class="how-section__head">
+        <div class="section-label">How It Works</div>
+        <h2 class="section-title" style="margin-bottom:12px">Built for speed</h2>
+        <p class="section-sub" style="margin:0 auto">Agents build itineraries fast. These tools are designed to match that pace.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step__num">1</div>
+          <div class="step__title">Select your region & details</div>
+          <p class="step__desc">Choose the trekking area, season, group size, and any other relevant inputs.</p>
+        </div>
+        <div class="step">
+          <div class="step__num">2</div>
+          <div class="step__title">Get instant breakdown</div>
+          <p class="step__desc">See the full cost in NPR and your preferred currency — USD, INR, GBP, EUR, or CNY.</p>
+        </div>
+        <div class="step">
+          <div class="step__num">3</div>
+          <div class="step__title">Copy or print the result</div>
+          <p class="step__desc">One-click copy to clipboard or print to PDF for your itinerary or client quote.</p>
+        </div>
+        <div class="step">
+          <div class="step__num">4</div>
+          <div class="step__title">Rates update automatically</div>
+          <p class="step__desc">Live exchange rates refresh every 60 minutes while the tab is open. No manual updates needed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ──────────────────────────────── -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-section__box">
+        <div class="hero__eyebrow" style="margin-bottom:20px">🆓 100% Free · No Login · No Ads</div>
+        <h2 class="cta-section__title">Open the Toolkit and start calculating</h2>
+        <p class="cta-section__sub">Bookmark it. Keep it open all day. Share it with your team.</p>
+        <a href="/toolkit/" class="btn btn--primary btn--lg">Open Agency Toolkit →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="/components/footer.js"></script>
+
+<script>
+// Live exchange rates on homepage
+const FALLBACK = { USD: 136, INR: 1.63, CNY: 18.7, GBP: 172, EUR: 148 };
+
+async function loadRates() {
+  try {
+    const res = await fetch('https://api.exchangerate-api.com/v4/latest/NPR');
+    const data = await res.json();
+    const r = data.rates;
+    const usd = r.USD ? (1/r.USD).toFixed(2) : FALLBACK.USD;
+    const inr = r.INR ? (1/r.INR).toFixed(3) : FALLBACK.INR;
+    const cny = r.CNY ? (1/r.CNY).toFixed(3) : FALLBACK.CNY;
+    const gbp = r.GBP ? (1/r.GBP).toFixed(2) : FALLBACK.GBP;
+    const eur = r.EUR ? (1/r.EUR).toFixed(2) : FALLBACK.EUR;
+
+    document.getElementById('r-usd').textContent = `1 USD = ${usd} NPR`;
+    document.getElementById('r-inr').textContent = `1 INR = ${inr} NPR`;
+    document.getElementById('r-cny').textContent = `1 CNY = ${cny} NPR`;
+    document.getElementById('r-gbp').textContent = `1 GBP = ${gbp} NPR`;
+    document.getElementById('r-eur').textContent = `1 EUR = ${eur} NPR`;
+    document.getElementById('rateNote').textContent = '⟳ Live rates';
+    document.getElementById('rateNote').style.color = 'var(--green)';
+  } catch(e) {
+    document.getElementById('r-usd').textContent = `1 USD ≈ ${FALLBACK.USD} NPR`;
+    document.getElementById('r-inr').textContent = `1 INR ≈ ${FALLBACK.INR} NPR`;
+    document.getElementById('r-cny').textContent = `1 CNY ≈ ${FALLBACK.CNY} NPR`;
+    document.getElementById('r-gbp').textContent = `1 GBP ≈ ${FALLBACK.GBP} NPR`;
+    document.getElementById('r-eur').textContent = `1 EUR ≈ ${FALLBACK.EUR} NPR`;
+    document.getElementById('rateNote').textContent = '≈ Approx. rates';
+  }
+}
+loadRates();
+setInterval(loadRates, 60 * 60 * 1000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found — tools.thenepal.io</title>
+  <link rel="stylesheet" href="/css/global.css">
+  <style>
+    .not-found {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 64px);
+      text-align: center;
+      padding: 40px 24px;
+    }
+    .not-found__num {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(80px, 18vw, 140px);
+      font-weight: 900;
+      color: var(--amber);
+      line-height: 1;
+      opacity: 0.3;
+    }
+    .not-found__title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 700;
+      color: var(--text);
+      margin-top: 8px;
+      margin-bottom: 14px;
+    }
+    .not-found__sub {
+      font-size: 15px;
+      color: var(--text-2);
+      max-width: 400px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+  </style>
+</head>
+<body>
+<script src="/components/header.js"></script>
+<main class="page-body">
+  <div class="not-found">
+    <div class="not-found__num">404</div>
+    <h1 class="not-found__title">Page not found</h1>
+    <p class="not-found__sub">This trail doesn't exist. Head back to base camp and try again.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <a href="/" class="btn btn--primary">← Back to Home</a>
+      <a href="/toolkit/" class="btn btn--outline">Open Toolkit</a>
+    </div>
+  </div>
+</main>
+<script src="/components/footer.js"></script>
+</body>
+</html>
